@@ -21,10 +21,10 @@ namespace PowerGridGA
         public static DNA Generate()
         {
             Init();
-            var genes = new List<Gene>();
+            var dna = new DNA();
             foreach (var gene in DNALib)
-                genes.Add(gene.NextRandom());
-            return new DNA(genes);
+                dna.Add(gene.NextRandom());
+            return dna;
         }
     }
 }

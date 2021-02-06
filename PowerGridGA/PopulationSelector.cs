@@ -1,7 +1,5 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PowerGridGA
 {
@@ -14,11 +12,6 @@ namespace PowerGridGA
 
         public static DNA SelectByLoadRate(this List<DNA> population, double demandPower)
         {
-            //var validPopulation = new ConcurrentBag<DNA>();
-            //Parallel.ForEach(population, (x) => {
-            //    if (x.GetTotalPower() >= demandPower)
-            //        validPopulation.Add(x);
-            //});
             var validPopulation = population.Where(x => x.GetTotalPower() >= demandPower).ToList();
             var loadRates = validPopulation.Select(x => x.GetLoadRate(demandPower));
             var sum = loadRates.Sum();
@@ -29,11 +22,6 @@ namespace PowerGridGA
 
         public static DNA SelectByCost(this List<DNA> population, double demandPower)
         {
-            //var validPopulation = new ConcurrentBag<DNA>();
-            //Parallel.ForEach(population, (x) => {
-            //    if (x.GetTotalPower() >= demandPower)
-            //        validPopulation.Add(x);
-            //});
             var validPopulation = population.Where(x => x.GetTotalPower() >= demandPower).ToList();
             var reciprocal = validPopulation.Select(x => 1 / x.GetAverageCost(demandPower));
             var sum = reciprocal.Sum();
@@ -44,11 +32,6 @@ namespace PowerGridGA
 
         public static DNA SelectByCO2(this List<DNA> population, double demandPower)
         {
-            //var validPopulation = new ConcurrentBag<DNA>();
-            //Parallel.ForEach(population, (x) => {
-            //    if (x.GetTotalPower() >= demandPower)
-            //        validPopulation.Add(x);
-            //});
             var validPopulation = population.Where(x => x.GetTotalPower() >= demandPower).ToList();
             var reciprocal = validPopulation.Select(x => 1 / x.GetAverageCO2(demandPower));
             var sum = reciprocal.Sum();

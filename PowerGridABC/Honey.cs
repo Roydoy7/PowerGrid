@@ -1,16 +1,16 @@
 ﻿using System;
 
-namespace PowerGridGA
+namespace PowerGridABC
 {
-    public class Gene
+    public class Honey
     {
         private static Random Rand { get; set; }
             = new Random();
 
-        public Gene()
+        public Honey()
         {
         }
-        public Gene(string code, int maxCount, double power, double cost, double co2)
+        public Honey(string code, int maxCount, double power, double cost, double co2)
         {
             Code = code;
             MaxCount = maxCount;
@@ -18,28 +18,29 @@ namespace PowerGridGA
             Cost = cost;
             CO2 = co2;
         }
-        public Gene Copy()
+        public Honey Copy()
         {
-            return new Gene
+            return new Honey
             {
                 Code = Code,
                 MaxCount = MaxCount,
                 Count = Count,
                 Power = Power,
                 Cost = Cost,
-                CO2 = CO2
+                CO2 = CO2,
             };
         }
 
         public string Code { get; private set; }
-        public int MaxCount { get; private set; }
         public int Count { get; set; }
+        public int MaxCount { get; private set; }
         public double Power { get; private set; }
         public double Cost { get; private set; }
         public double CO2 { get; private set; }
-        public Gene NextRandom()
+
+        public Honey NextRandom()
         {
-            return new Gene()
+            return new Honey()
             {
                 Code = Code,
                 MaxCount = MaxCount,
@@ -50,16 +51,9 @@ namespace PowerGridGA
             };
         }
 
-        public void Mutation()
+        public void SetCount(int count)
         {
-            var posOrNega = Rand.Next(0, 2) % 2;
-            var mutationStep = Rand.Next(0, 4);
-
-            if (posOrNega == 0)
-                Count += mutationStep;
-            else
-                Count -= mutationStep;
-
+            Count = count;
             if (Count > MaxCount)
                 Count = MaxCount;
             if (Count < 0)

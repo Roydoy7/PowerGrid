@@ -1,16 +1,15 @@
 ﻿using System;
 
-namespace PowerGridGA
+namespace PowerGridPSO
 {
-    public class Gene
+    public class Plant
     {
         private static Random Rand { get; set; }
             = new Random();
-
-        public Gene()
+        public Plant()
         {
         }
-        public Gene(string code, int maxCount, double power, double cost, double co2)
+        public Plant(string code, int maxCount, double power, double cost, double co2)
         {
             Code = code;
             MaxCount = maxCount;
@@ -18,28 +17,31 @@ namespace PowerGridGA
             Cost = cost;
             CO2 = co2;
         }
-        public Gene Copy()
+        public Plant Copy()
         {
-            return new Gene
+            return new Plant
             {
                 Code = Code,
                 MaxCount = MaxCount,
                 Count = Count,
                 Power = Power,
                 Cost = Cost,
-                CO2 = CO2
+                CO2 = CO2,
+                PBest=PBest,
+                V=V,
             };
         }
-
         public string Code { get; private set; }
-        public int MaxCount { get; private set; }
         public int Count { get; set; }
+        public int MaxCount { get; private set; }
         public double Power { get; private set; }
         public double Cost { get; private set; }
         public double CO2 { get; private set; }
-        public Gene NextRandom()
+        private double V { get; set; } = 0.0;
+        public int PBest { get; set; }
+        public Plant NextRandom()
         {
-            return new Gene()
+            return new Plant()
             {
                 Code = Code,
                 MaxCount = MaxCount,
@@ -49,23 +51,25 @@ namespace PowerGridGA
                 CO2 = CO2,
             };
         }
-
-        public void Mutation()
+        public void NextPosition(double w, double c1 = 2, double c2 = 2)
         {
-            var posOrNega = Rand.Next(0, 2) % 2;
-            var mutationStep = Rand.Next(0, 4);
-
-            if (posOrNega == 0)
-                Count += mutationStep;
-            else
-                Count -= mutationStep;
-
+            var rand = Rand.NextDouble();
+            var gbest = PlantGBest.GetGBest(Code);
+            V = Math.Round(w * V + c1 * rand * (PBest - Count) + c2 * rand * (gbest - Count));
+            Count += Convert.ToInt32(V);
             if (Count > MaxCount)
                 Count = MaxCount;
             if (Count < 0)
                 Count = 0;
+        }        
+        public void UpdatePBest()
+        {
+            PBest = Count;
         }
-
+        public void UpdateGBest()
+        {
+            PlantGBest.SetGBest(Code, Count);
+        }
         public override string ToString()
         {
             return string.Format($"{Code}{Count} ");

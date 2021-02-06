@@ -57,15 +57,15 @@ namespace PowerGridGA
             newGenes2.AddRange(dna1.TakeLast(DNA.DNALength - pos));
 
             pos = Rand.Next(1, DNA.DNALength);
-            var newGenes3 = new List<Gene>();
+            var newGenes3 = new DNA();
             newGenes3.AddRange(newGenes1.Take(pos));
             newGenes3.AddRange(newGenes2.TakeLast(DNA.DNALength - pos));
 
-            var newGenes4 = new List<Gene>();
+            var newGenes4 = new DNA();
             newGenes4.AddRange(newGenes2.Take(pos));
             newGenes4.AddRange(newGenes1.TakeLast(DNA.DNALength - pos));
 
-            return new Tuple<DNA, DNA>(new DNA(newGenes3), new DNA(newGenes4));
+            return new Tuple<DNA, DNA>(newGenes3, newGenes4);
         }
 
 

@@ -9,25 +9,23 @@ namespace PowerGridGA
     {
         public static int DNALength { get; private set; } = 6;
         private static Random Rand = new Random();
-        public DNA(IEnumerable<Gene> genes)
-        {
-            foreach(var gene in genes)
-            {
-                this.Add(gene);
-            }
-        }
 
         public DNA Copy()
         {
-            var genes = new List<Gene>();            
+            var dna = new DNA();
             foreach (var gene in this)
-                genes.Add(gene.Copy());
-            return new DNA(genes);
+                dna.Add(gene.Copy());
+            return dna;
+        }
+        public void AddRange(IEnumerable<Gene> genes)
+        {
+            foreach (var gene in genes)
+                this.Add(gene);
         }
 
         public void Mutation()
         {
-            foreach (var _ in Enumerable.Range(0, 3))
+            foreach (var _ in Enumerable.Range(0, 6))
             {
                 var pos = Rand.Next(0, DNA.DNALength);
                 this[pos].Mutation();
@@ -41,6 +39,6 @@ namespace PowerGridGA
                 str += gene.ToString();
             return str;
         }
-               
+
     }
 }
